@@ -42,7 +42,7 @@ function App() {
 
   return (
     <main className='my-5 container'>
-      <h1>Todo List</h1>
+      <h1 className='display-6'>Todo List</h1>
 
       <TodoForm
         todoInput={todoInput}
@@ -50,13 +50,15 @@ function App() {
         addTodo={addTodo}
       />
 
-      {loading ? (
-        <div className='text-center'>
-          <div className='spinner-border'></div>
-        </div>
-      ) : (
-        <TodoList todos={todos} />
-      )}
+      <section className='my-5'>
+        {loading ? (
+          <div className='text-center'>
+            <div className='spinner-border'></div>
+          </div>
+        ) : (
+          <TodoList todos={todos} />
+        )}
+      </section>
     </main>
   )
 }

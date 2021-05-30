@@ -1,7 +1,7 @@
 import React from 'react'
 import { db } from '../firebase_config'
 
-const Todo = ({ todo, inprogress, id }) => {
+const Todo = ({ todo: { todo, inprogress, id } }) => {
   // toggle progress
   const toggleInProgress = () => {
     db.collection('todos').doc(id).update({
@@ -13,9 +13,14 @@ const Todo = ({ todo, inprogress, id }) => {
   const deleteTodo = () => {
     db.collection('todos').doc(id).delete()
   }
-
   return (
-    <div className='list-group-item d-flex align-items-center justify-content-between'>
+    <div
+      style={{
+        textDecoration: !inprogress ? 'line-through' : 'none',
+        color: !inprogress ? '#999' : 'black',
+      }}
+      className='fw-bold list-group-item d-flex align-items-center justify-content-between'
+    >
       <div>{todo}</div>
 
       <div className=''>

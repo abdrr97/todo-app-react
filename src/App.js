@@ -1,18 +1,22 @@
-import { useState, useEffect } from 'react'
-import { db } from './firebase_config'
+import React, { useState, useEffect } from 'react'
+import TodoList from './components/TodoList'
+import TodoForm from './components/TodoForm'
+
 import firebase from 'firebase'
-import TodoListItem from './components/Todo'
+import { db } from './firebase_config'
 
 function App() {
   const [todos, setTodos] = useState([])
   const [todoInput, setTodoInput] = useState('')
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     getTodos()
   }, []) // blank to run only on first launch
 
-  function getTodos() {
-    db.collection('todos').onSnapshot(function (querySnapshot) {
+  const getTodos = () => {
+    console.log(loading)
+    db.collection('todos').onSnapshot((querySnapshot) => {
       setTodos(
         querySnapshot.docs.map((doc) => ({
           id: doc.id,
@@ -20,10 +24,11 @@ function App() {
           inprogress: doc.data().inprogress,
         }))
       )
+      setLoading(false)
     })
   }
 
-  function addTodo(e) {
+  const addTodo = (e) => {
     e.preventDefault()
 
     db.collection('todos').add({
@@ -36,42 +41,23 @@ function App() {
   }
 
   return (
-    <div className='App'>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          width: '100%',
-        }}
-      >
-        <h1>Sanskar Tiwari Todos App 😃</h1>
-        <form>
-          <input
-            id='standard-basic'
-            label='Write a Todo'
-            value={todoInput}
-            style={{ width: '90vw', maxWidth: '500px' }}
-            onChange={(e) => setTodoInput(e.target.value)}
-          />
-          <button type='submit' variant='contained' onClick={addTodo}>
-            Default
-          </button>
-        </form>
+    <main className='my-5 container'>
+      <h1>Todo List</h1>
 
-        <div style={{ width: '90vw', maxWidth: '500px', marginTop: '24px' }}>
-          {todos.map((todo) => (
-            <TodoListItem
-              key={todo.id}
-              todo={todo.todo}
-              inprogress={todo.inprogress}
-              id={todo.id}
-            />
-          ))}
+      <TodoForm
+        todoInput={todoInput}
+        setTodoInput={setTodoInput}
+        addTodo={addTodo}
+      />
+
+      {loading ? (
+        <div className='text-center'>
+          <div className='spinner-border'></div>
         </div>
-      </div>
-    </div>
+      ) : (
+        <TodoList todos={todos} />
+      )}
+    </main>
   )
 }
 

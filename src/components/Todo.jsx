@@ -1,28 +1,38 @@
 import React from 'react'
 import { db } from '../firebase_config'
 
-export default function TodoListItem({ todo, inprogress, id }) {
-  function toggleInProgress() {
+const Todo = ({ todo, inprogress, id }) => {
+  // toggle progress
+  const toggleInProgress = () => {
     db.collection('todos').doc(id).update({
       inprogress: !inprogress,
     })
   }
 
-  function deleteTodo() {
+  // delete progress
+  const deleteTodo = () => {
     db.collection('todos').doc(id).delete()
   }
 
   return (
-    <div style={{ display: 'flex' }}>
-      <div>
-        {todo}
-        {inprogress ? 'In Progress' : 'Completed'}
-      </div>
+    <div className='list-group-item d-flex align-items-center justify-content-between'>
+      <div>{todo}</div>
 
-      <button onClick={toggleInProgress}>
-        {inprogress ? 'Done' : 'UnDone'}
-      </button>
-      <button onClick={deleteTodo}>X</button>
+      <div className=''>
+        <span className={inprogress ? 'badge bg-warning' : 'badge bg-success'}>
+          {inprogress ? 'In Progress' : 'Completed'}
+        </span>
+        <button
+          className='btn btn-sm  btn-primary mx-1'
+          onClick={toggleInProgress}
+        >
+          {inprogress ? 'Done' : 'UnDone'}
+        </button>
+        <button className='btn btn-sm  btn-danger mx-1' onClick={deleteTodo}>
+          X
+        </button>
+      </div>
     </div>
   )
 }
+export default Todo

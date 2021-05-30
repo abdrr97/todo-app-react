@@ -2,23 +2,24 @@ import React from 'react'
 import Todo from './Todo'
 
 const TodoList = ({ todos }) => {
-  const todosInprogress = () => {
-    return todos.filter((todo) => todo.inprogress)
-  }
-  const todosCompleted = () => {
-    return todos.filter((todo) => !todo.inprogress)
-  }
+  // Tasks in prograss
+  const todosInprogress = todos
+    .filter((todo) => todo.inprogress)
+    .map((todo) => <Todo key={todo.id} todo={todo} />)
+
+  // completed Tasks
+  const todosCompleted = todos
+    .filter((todo) => !todo.inprogress)
+    .map((todo) => <Todo key={todo.id} todo={todo} />)
 
   return (
     <>
       <h3 className='fw-light'>Todos In Progress</h3>
       <div className='my-5 list-group'>
-        {todosInprogress().length > 0 ? (
-          todos
-            .filter((todo) => todo.inprogress)
-            .map((todo) => <Todo key={todo.id} todo={todo} />)
+        {todosInprogress.length > 0 ? (
+          todosInprogress
         ) : (
-          <h2 className='fw-light text-center'>
+          <h2 className='fw-light text-center text-secondary'>
             All Tasks Have been completed
           </h2>
         )}
@@ -26,12 +27,12 @@ const TodoList = ({ todos }) => {
 
       <h3 className='fw-light'>Completed Todos</h3>
       <div className='my-5 list-group'>
-        {todosCompleted().length > 0 ? (
-          todos
-            .filter((todo) => !todo.inprogress)
-            .map((todo) => <Todo key={todo.id} todo={todo} />)
+        {todosCompleted.length > 0 ? (
+          todosCompleted
         ) : (
-          <h2 className='fw-light text-center'>All Tasks are in progress</h2>
+          <h2 className='fw-light text-center text-secondary'>
+            All Tasks are in progress
+          </h2>
         )}
       </div>
     </>

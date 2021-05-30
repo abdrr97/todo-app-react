@@ -13,6 +13,7 @@ const Todo = ({ todo: { todo, inprogress, id } }) => {
   const deleteTodo = () => {
     db.collection('todos').doc(id).delete()
   }
+
   return (
     <div
       style={{

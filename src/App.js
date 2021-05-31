@@ -21,22 +21,24 @@ function App() {
   }
 
   const getTodos = () => {
-    db.collection('todos').onSnapshot((querySnapshot) => {
-      setTodos(
-        querySnapshot.docs.map((doc) => {
-          const { title, content, inprogress, createdAt } = doc.data()
-
-          return {
-            id: doc.id,
-            title: title,
-            content: content,
-            inprogress: inprogress,
-            createdAt: createdAt,
-          }
-        })
-      )
-      setLoading(false)
-    })
+    db.collection('todos')
+      .orderBy('createdAt', 'desc')
+      .onSnapshot((querySnapshot) => {
+        setTodos(
+          querySnapshot.docs.map((doc) => {
+            const { title, content, inprogress, createdAt } = doc.data()
+            const id = doc.id
+            return {
+              id,
+              title,
+              content,
+              inprogress,
+              createdAt,
+            }
+          })
+        )
+        setLoading(false)
+      })
   }
 
   return (

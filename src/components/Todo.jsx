@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { db } from '../firebase_config'
 
 const Todo = (props) => {
   let {
     todo: { title, content, inprogress, id, createdAt },
   } = props
+
+  const [isLoading, setIsLoading] = useState(false)
   // toggle progress
   const toggleInProgress = () => {
     db.collection('todos').doc(id).update({
@@ -14,7 +16,14 @@ const Todo = (props) => {
 
   // delete progress
   const deleteTodo = () => {
-    db.collection('todos').doc(id).delete()
+    if (window.confirm('are you sure ?')) {
+      setIsLoading(true)
+
+      setTimeout(() => {
+        db.collection('todos').doc(id).delete()
+        setIsLoading(false)
+      }, 1000)
+    }
   }
 
   return (
@@ -23,7 +32,8 @@ const Todo = (props) => {
         className='card text-dark bg-light mb-3'
         style={{
           border: '3px solid',
-          borderColor: inprogress ? 'orange' : 'green',
+          borderColor:
+            inprogress && !isLoading ? 'orange' : isLoading ? 'red' : 'green',
         }}
       >
         <div className='card-header d-flex justify-content-between border-light align-items-center'>
@@ -44,7 +54,7 @@ const Todo = (props) => {
             </label>
           </div>
           <button className='btn btn-sm btn-danger mx-1' onClick={deleteTodo}>
-            &times;
+            {isLoading ? 'is deleting ... ' : <span>&times;</span>}
           </button>
         </div>
         <div className='card-body border-light'>

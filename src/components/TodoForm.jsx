@@ -17,6 +17,7 @@ const TodoForm = (props) => {
         inprogress: true,
         title: todoTitleInput,
         content: todoContentInput,
+        createdAt: Date.now(),
       })
 
       setTodoTitleInput('')

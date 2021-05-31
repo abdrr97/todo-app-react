@@ -24,13 +24,14 @@ function App() {
     db.collection('todos').onSnapshot((querySnapshot) => {
       setTodos(
         querySnapshot.docs.map((doc) => {
-          const { title, content, inprogress } = doc.data()
+          const { title, content, inprogress, createdAt } = doc.data()
 
           return {
             id: doc.id,
             title: title,
             content: content,
             inprogress: inprogress,
+            createdAt: createdAt,
           }
         })
       )

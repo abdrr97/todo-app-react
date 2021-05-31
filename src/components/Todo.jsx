@@ -3,7 +3,7 @@ import { db } from '../firebase_config'
 
 const Todo = (props) => {
   let {
-    todo: { title, content, inprogress, id },
+    todo: { title, content, inprogress, id, createdAt },
   } = props
   // toggle progress
   const toggleInProgress = () => {
@@ -28,25 +28,36 @@ const Todo = (props) => {
       >
         <div className='card-header d-flex justify-content-between border-light align-items-center'>
           <h4 className='fw-light'>{title}</h4>
-          <div>
-            <button
-              className='btn btn-sm btn-outline-primary mx-1'
-              onClick={toggleInProgress}
+          <div className='form-check form-switch'>
+            <input
+              className='form-check-input'
+              type='checkbox'
+              id='flexSwitchCheckDefault'
+              value={!inprogress}
+              onChange={toggleInProgress}
+            />
+            <label
+              className='form-check-label'
+              htmlFor='flexSwitchCheckDefault'
             >
-              {inprogress ? 'done' : 'un done'}
-            </button>
-            <button className='btn btn-sm btn-danger mx-1' onClick={deleteTodo}>
-              &times;
-            </button>
+              change progress
+            </label>
           </div>
+          <button className='btn btn-sm btn-danger mx-1' onClick={deleteTodo}>
+            &times;
+          </button>
         </div>
-        <div className='card-body  border-light'>{content}</div>
-        <div className='card-footer  border-light'>
+        <div className='card-body border-light'>
+          <pre>{content}</pre>
+        </div>
+        <div className='card-footer border-light d-flex justify-content-between align-items-center'>
           <span
             className={inprogress ? 'badge bg-warning' : 'badge bg-success'}
           >
             {inprogress ? 'In Progress' : 'Completed'}
           </span>
+
+          <span>{new Date(createdAt).toDateString()}</span>
         </div>
       </article>
     </div>

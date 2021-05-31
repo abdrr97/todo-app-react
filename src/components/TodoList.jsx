@@ -3,38 +3,25 @@ import Todo from './Todo'
 
 const TodoList = ({ todos }) => {
   // Tasks in prograss
-  const todosInprogress = todos
-    .filter((todo) => todo.inprogress)
-    .map((todo) => <Todo key={todo.id} todo={todo} />)
+  const todosList = todos.map((todo) => <Todo key={todo.id} todo={todo} />)
 
   // completed Tasks
-  const todosCompleted = todos
-    .filter((todo) => !todo.inprogress)
-    .map((todo) => <Todo key={todo.id} todo={todo} />)
+  // const todosCompleted = todos
+  //   .filter((todo) => !todo.inprogress)
+  //   .map((todo) => <Todo key={todo.id} todo={todo} />)
 
   return (
     <>
-      <h3 className='fw-light'>Todos In Progress</h3>
-      <div className='my-5 list-group'>
-        {todosInprogress.length > 0 ? (
-          todosInprogress
+      <h3 className='fw-light'>Todos In Progress - {todosList.length}</h3>
+      <section className='row row-cols-1 row-cols-md-2 g-4'>
+        {todos.length > 0 ? (
+          todosList
         ) : (
           <h2 className='fw-light text-center text-secondary'>
-            All Tasks Have been completed
+            No Todos Found
           </h2>
         )}
-      </div>
-
-      <h3 className='fw-light'>Completed Todos</h3>
-      <div className='my-5 list-group'>
-        {todosCompleted.length > 0 ? (
-          todosCompleted
-        ) : (
-          <h2 className='fw-light text-center text-secondary'>
-            All Tasks are in progress
-          </h2>
-        )}
-      </div>
+      </section>
     </>
   )
 }

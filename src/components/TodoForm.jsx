@@ -4,7 +4,7 @@ const TodoForm = ({ addTodo, todoInput, setTodoInput }) => {
   return (
     <>
       <form className=''>
-        <div class='mb-3'>
+        <div className='mb-3'>
           <input
             className='form-control'
             placeholder='Write a Todo'

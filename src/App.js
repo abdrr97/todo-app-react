@@ -15,7 +15,6 @@ function App() {
   }, []) // blank to run only on first launch
 
   const getTodos = () => {
-    console.log(loading)
     db.collection('todos').onSnapshot((querySnapshot) => {
       setTodos(
         querySnapshot.docs.map((doc) => ({
@@ -29,15 +28,17 @@ function App() {
   }
 
   const addTodo = (e) => {
+    let { value } = e.target
     e.preventDefault()
+    if (value !== '') {
+      db.collection('todos').add({
+        inprogress: true,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        todo: todoInput,
+      })
 
-    db.collection('todos').add({
-      inprogress: true,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      todo: todoInput,
-    })
-
-    setTodoInput('')
+      setTodoInput('')
+    }
   }
 
   return (
